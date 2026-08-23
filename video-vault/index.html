@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Vault - Retro Edition</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="window">
+    <div class="title-bar">
+      <span>📼 Video Vault</span>
+      <div class="title-buttons">
+        <span>_</span><span>□</span><span>✕</span>
+      </div>
+    </div>
+    <div class="window-body">
+      <label for="linkInput">Paste video link:</label>
+      <div class="input-row">
+        <input type="text" id="linkInput" placeholder="https://..." />
+        <button id="addBtn">Add Video</button>
+      </div>
+
+      <button id="viewBtn">View Videos</button>
+
+      <div id="videoListContainer" class="hidden">
+        <p><strong>Stored Videos:</strong></p>
+        <ul id="videoList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load order matters: db.js defines the data layer, app.js uses it -->
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
