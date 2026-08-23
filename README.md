@@ -1,76 +1,49 @@
-# studioMirrorsBack
+# Video Vault (Retro Edition)
 
-This repository contains the backend for the studioMirrors project.
+A tiny retro-Windows-styled app to paste video links, store them, and view them all later.
 
-## About
-
-Short description: TODO — add a one-line summary of what this backend does (API, services, auth, etc.).
-
-## Features
-
-- REST API endpoints
-- Authentication (describe mechanism)
-- Database integration
-- Background jobs / workers (if applicable)
-
-## Getting started
-
-Prerequisites
-
-- Node.js >= 18 (or whichever runtime your project uses)
-- npm or yarn
-- PostgreSQL / MongoDB / other database (replace with correct DB)
-
-Install
-
-```bash
-# install dependencies
-npm install
-# or
-# yarn install
-```
-
-Environment
-
-Create a `.env` file in the project root and set the required environment variables. Example:
+## Repo structure
 
 ```
-PORT=3000
-DATABASE_URL=postgres://user:password@localhost:5432/studio_mirrors
-JWT_SECRET=your_jwt_secret
+video-vault/
+├── index.html                    # Page structure / markup
+├── css/
+│   └── style.css                 # Retro Windows-style visuals
+├── js/
+│   ├── db.js                     # Data layer (currently localStorage mock)
+│   └── app.js                    # UI logic - wires buttons to db.js
+├── netlify/
+│   └── functions/
+│       └── videos.js             # MOCK serverless function (placeholder for real DB)
+├── netlify.toml                  # Netlify build/deploy config
+└── README.md
 ```
 
-Run
+## How it works right now
 
-```bash
-# start in development
-npm run dev
-# or
-npm start
-```
+- `js/db.js` stores links in the browser's `localStorage`, so the site is fully
+  functional the moment it's deployed - no database setup required.
+- `netlify/functions/videos.js` exists as a **mock/dummy** serverless function.
+  It's not called yet, but the folder is wired up in `netlify.toml` so Netlify
+  will deploy it automatically, ready for you to connect a real database later.
+- Every important step (adding a link, reading links, rendering the list) logs
+  to the browser console with `[DB READ]`, `[DB WRITE]`, `[ADD ...]`,
+  `[VIEW ...]`, `[RENDER]` tags so you can trace exactly what's happening.
 
-Testing
+## Deploying to Netlify
 
-```bash
-npm test
-```
+1. Push this repo to GitHub.
+2. In Netlify: **Add new site → Import an existing project** → pick this repo.
+3. Build settings: leave the publish directory as `.` (root) - already set in `netlify.toml`.
+4. Deploy. That's it - no environment variables or database needed yet.
 
-API
+## Upgrading to a real database later
 
-Document the main API endpoints here, for example:
-
-- GET /health — health check
-- POST /auth/login — login
-- GET /users — list users (authenticated)
-
-Contributing
-
-Contributions are welcome. Please open issues for bugs or feature requests and create pull requests for proposed changes.
-
-Maintainers
-
-- (Add project maintainers here)
-
-License
-
-Specify the project license (e.g., MIT). Replace this line with the chosen license.
+1. Connect **Netlify Database** (or any Postgres provider) to this site.
+2. Replace the dummy logic in `netlify/functions/videos.js` with real
+   queries against that database.
+3. In `js/db.js`, swap the localStorage code in `getVideos()` and
+   `addVideo()` for the commented-out `fetch('/.netlify/functions/videos')`
+   examples already included in that file.
+4. `js/app.js` requires **no changes** - it only talks to `DB.getVideos()`
+   and `DB.addVideo()`, regardless of what's powering them underneath.
