@@ -59,7 +59,7 @@ const DashDB = (() => {
         // CHANGE HERE: set to true once work begins (or return real data from a function).
         workStarted: false,
         // CHANGE HERE: payee name and currency shown in the "Mode of Payment" popup.
-        payment: { name: 'Longe Longe', currency: 'XAF', currencyName: 'Central African CFA franc' },
+        payment: { name: 'Bryan Besong', currency: 'XAF', currencyName: 'Central African CFA franc' },
         // Empty until work starts; same shape as before so render code needs no change.
         total: 0, scheduled: 0,
         week: { count: 0, goal: 0 },
