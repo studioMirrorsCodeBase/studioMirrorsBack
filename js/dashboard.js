@@ -30,15 +30,18 @@ $('loginBtn').addEventListener('click', () => {
     .catch((err) => { console.error('[LOGIN FAILED]', err); $('loginMsg').textContent = err.message; });
 });
 
-$('logoutBtn').addEventListener('click', () => {
+$('logoutBtn').addEventListener('click', async () => {
   console.log('[LOGOUT CLICKED]');
-  Auth.logout();
+  await Auth.logout().catch((err) => console.error('[LOGOUT FAILED]', err));
   showView(false);
 });
 
 // ---- START: session check, then load data ----
-function start() {
-  const session = Auth.getSession();
+async function start() {
+  const session = await Auth.getSession().catch((err) => {
+    console.error('[DASH] Session check failed:', err);
+    return null;
+  });
   if (!session) return showView(false);
 
   DashDB.getDashboard(session.user)

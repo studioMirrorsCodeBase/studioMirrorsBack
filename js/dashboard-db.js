@@ -1,36 +1,49 @@
 /**
  * dashboard-db.js
- * Mocked auth + dashboard data (localStorage / in-memory).
- * FUTURE: swap internals for fetch('/.netlify/functions/...') calls.
- * Both APIs return Promises (or plain values for session), so
- * dashboard.js will NOT need to change.
+ * Auth = real server-side login via /.netlify/functions/auth.
+ * DashDB = still mock data. FUTURE: swap for a function that checks the session.
  */
 
 const Auth = (() => {
-  const KEY = 'videoVaultSession';
-  console.log('[AUTH INIT] Mock auth loaded (localStorage).');
+  const ENDPOINT = '/.netlify/functions/auth';
+  console.log('[AUTH INIT] Server-side auth (Netlify function).');
 
-  // Mock: any non-empty user + password is accepted. Password is never stored or logged.
-  function login(user, password) {
-    console.log('[AUTH LOGIN] Attempt for user:', user);
-    return new Promise((resolve, reject) => {
-      if (!user || !password) return reject(new Error('Enter user name and password.'));
-      localStorage.setItem(KEY, JSON.stringify({ user }));
-      console.log('[AUTH LOGIN] Session created.');
-      resolve({ user });
-    });
+  /** Calls the auth function. Resolves { ok, data }; throws only if the server is unreachable. */
+  async function call(method, body) {
+    console.log('[AUTH CALL]', method);
+    try {
+      const res = await fetch(ENDPOINT, {
+        method,
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: body && JSON.stringify(body),
+      });
+      const data = await res.json().catch(() => ({}));
+      console.log('[AUTH CALL] Status:', res.status);
+      return { ok: res.ok, data };
+    } catch (err) {
+      console.error('[AUTH CALL] Network error:', err);
+      throw new Error('Cannot reach the server. Try again.');
+    }
   }
 
-  function getSession() {
-    const raw = localStorage.getItem(KEY);
-    const session = raw ? JSON.parse(raw) : null;
-    console.log('[AUTH SESSION]', session ? 'Active for ' + session.user : 'None');
-    return session;
+  async function login(user, password) {
+    console.log('[AUTH LOGIN] Attempt.');
+    const { ok, data } = await call('POST', { user, password });
+    if (!ok) throw new Error(data.error || 'Login failed.');
+    return data;
   }
 
-  function logout() {
-    localStorage.removeItem(KEY);
-    console.log('[AUTH LOGOUT] Session cleared.');
+  /** @returns {Promise<{user:string}|null>} */
+  async function getSession() {
+    const { ok, data } = await call('GET');
+    console.log('[AUTH SESSION]', ok ? 'Active for ' + data.user : 'None');
+    return ok ? data : null;
+  }
+
+  async function logout() {
+    await call('DELETE');
+    console.log('[AUTH LOGOUT] Done.');
   }
 
   return { login, getSession, logout };
