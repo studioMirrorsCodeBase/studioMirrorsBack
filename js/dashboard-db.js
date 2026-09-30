@@ -56,24 +56,18 @@ const DashDB = (() => {
     return new Promise((resolve) => {
       const data = {
         user,
-        total: 365, scheduled: 123,
-        week: { count: 45, goal: 45 },
-        target: { week: 7, earned: 2500, goal: 2500 },
-        videos: [
-          { id: 'VID-001', title: 'Morning Dance Routine - Beginner', platform: 'Instagram', date: 'Sept 5, 2024', status: 'Scheduled', caption: 'Build confidence...', tags: '#dance', link: 'https://example.com/1', issue: false },
-          { id: 'VID-002', title: 'Confidence Building Series #1', platform: 'TikTok', date: 'Sept 6, 2024', status: 'In Progress', caption: 'Dance at your...', tags: '#confidence', link: 'https://example.com/2', issue: false },
-          { id: 'VID-003', title: 'Teacher Tips - Posture Basics', platform: 'YouTube', date: 'Sept 7, 2024', status: 'Posted', caption: 'Master the basics...', tags: '#tips', link: 'https://example.com/3', issue: false },
-          { id: 'VID-004', title: 'Home Dance Challenge Week 1', platform: 'Instagram', date: 'Sept 8, 2024', status: 'Verified', caption: 'Join our week...', tags: '#challenge', link: 'https://example.com/4', issue: false },
-          { id: 'VID-005', title: 'Student Success Story', platform: 'TikTok', date: 'Sept 9, 2024', status: 'Not Started', caption: 'Real transformation...', tags: '#story', link: 'https://example.com/5', issue: true },
-        ],
-        milestones: [
-          { title: 'Week 2: 90 Videos', state: 'COMPLETED', earned: 500, date: 'Sept 12, 2024' },
-          { title: 'Week 4: 180 Videos', state: 'COMPLETED', earned: 500, date: 'Sept 26, 2024' },
-          { title: 'Week 7: 270 Videos', state: 'IN PROGRESS' },
-          { title: 'Week 10: 365 Videos', state: 'UPCOMING' },
-        ],
+        // CHANGE HERE: set to true once work begins (or return real data from a function).
+        workStarted: false,
+        // CHANGE HERE: payee name and currency shown in the "Mode of Payment" popup.
+        payment: { name: 'Longe Longe', currency: 'XAF', currencyName: 'Central African CFA franc' },
+        // Empty until work starts; same shape as before so render code needs no change.
+        total: 0, scheduled: 0,
+        week: { count: 0, goal: 0 },
+        target: { week: 0, earned: 0, goal: 0 },
+        videos: [],
+        milestones: [],
       };
-      console.log('[DASH READ] Mock data ready. Videos:', data.videos.length);
+      console.log('[DASH READ] Data ready. workStarted:', data.workStarted, '| Videos:', data.videos.length);
       resolve(data);
     });
   }

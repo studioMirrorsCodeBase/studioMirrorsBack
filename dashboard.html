@@ -31,7 +31,15 @@
     <div class="window-body">
       <div class="top-row">
         <strong id="welcome"></strong>
-        <button id="logoutBtn">Logout</button>
+        <div>
+          <button id="payBtn">💳 Mode of Payment</button>
+          <button id="logoutBtn">Logout</button>
+        </div>
+      </div>
+
+      <!-- Shown only while work has not started -->
+      <div class="notice hidden" id="notStarted">
+        ⏳ Work has not started yet. Your information can't be shown until work begins.
       </div>
 
       <div class="cards">
@@ -66,6 +74,22 @@
           <strong>Your Milestones</strong>
           <ul id="milestoneList"></ul>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODE OF PAYMENT MODAL (filled by dashboard.js) -->
+  <div class="modal hidden" id="payModal">
+    <div class="window" role="dialog" aria-modal="true" aria-labelledby="payTitle">
+      <div class="title-bar">
+        <span id="payTitle">💳 Mode of Payment</span>
+        <div class="title-buttons"><span id="payClose">✕</span></div>
+      </div>
+      <div class="window-body">
+        <p>Your payments are sent to:</p>
+        <p><strong>Name:</strong> <span id="payName"></span></p>
+        <p><strong>Currency:</strong> <span id="payCurrency"></span></p>
+        <button id="payOk">OK</button>
       </div>
     </div>
   </div>
