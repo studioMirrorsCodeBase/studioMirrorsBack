@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studio Mirrors - Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body class="dash">
+
+  <!-- LOGIN (shown when no session) -->
+  <div class="window login" id="loginWin">
+    <div class="title-bar"><span>🔒 Log On</span></div>
+    <div class="window-body">
+      <label for="userInput">User name:</label>
+      <input type="text" id="userInput" />
+      <label for="passInput">Password:</label>
+      <input type="password" id="passInput" />
+      <p id="loginMsg" class="err"></p>
+      <button id="loginBtn">Log In</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD (shown when logged in) -->
+  <div class="window main hidden" id="dashboard">
+    <div class="title-bar">
+      <span>📊 Studio Mirrors - Video Scheduling Tracker</span>
+      <div class="title-buttons"><span>_</span><span>□</span><span>✕</span></div>
+    </div>
+    <div class="window-body">
+      <div class="top-row">
+        <strong id="welcome"></strong>
+        <button id="logoutBtn">Logout</button>
+      </div>
+
+      <div class="cards">
+        <div class="card center">
+          <div class="ring" id="ring"><span id="pct"></span></div>
+          <div id="scheduledText"></div>
+        </div>
+        <div class="card center">
+          <div class="big" id="weekCount"></div>
+          <div>Videos Scheduled This Week</div>
+          <div class="ok" id="weekStatus"></div>
+        </div>
+        <div class="card">
+          <div id="milestoneTitle"></div>
+          <progress id="milestoneBar" max="100"></progress>
+          <div id="weekTarget"></div>
+          <div class="earned" id="earned"></div>
+        </div>
+      </div>
+
+      <div class="lower">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Title</th><th>Platform</th><th>Target Date</th>
+              <th>Status</th><th>Caption</th><th>Tags</th><th>Link</th><th>Issues</th>
+            </tr></thead>
+            <tbody id="videoRows"></tbody>
+          </table>
+        </div>
+        <div class="card">
+          <strong>Your Milestones</strong>
+          <ul id="milestoneList"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load order matters: data layer first, then UI -->
+  <script src="js/dashboard-db.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
